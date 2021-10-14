@@ -11,14 +11,39 @@ struct ContentView: View {
     @State private var speed = 50.0
     @State private var isEditing = false
     
+//    var body: some View {
+//        Slider(
+//            value: $speed,
+//            in: 0...100,
+//            step: 5
+//        ) {
+//            Text("Speed")
+//        } minimumValueLabel: {
+//            Text("0")
+//        } maximumValueLabel: {
+//            Text("100")
+//        } onEditingChanged: { editing in
+//            isEditing = editing
+//        }
+//        Text("\(speedDisplay)")
+//            .foregroundColor(isEditing ? .red : .blue)
+//    }
+    
     var body: some View {
         VStack {
             Slider(value: $speed,
                    in: 0...100, step: 0.1,
+                   label: {
+                Text("Speed")
+            }, minimumValueLabel: {
+                Text("0")
+            }, maximumValueLabel: {
+                Text("100")
+            },
                    onEditingChanged: { editing in
                 isEditing = editing
             })
-                .padding()
+                .padding(.horizontal)
             Text("\(speedDisplay)")
                 .foregroundColor(speed > 50 ? .green : .blue)
         }
