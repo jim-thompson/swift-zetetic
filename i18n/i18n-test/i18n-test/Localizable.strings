@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  i18n-test
+
+  Created by Jim Thompson on 10/15/21.
+  
+*/
+
+"title-name %@" = "Hello, %@.";
