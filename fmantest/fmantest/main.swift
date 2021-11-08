@@ -50,7 +50,7 @@ print()
 
 var homefiles = try? fman.contentsOfDirectory(
     at: home,
-    includingPropertiesForKeys: Array(attrSetAll),
+    includingPropertiesForKeys: nil,
     options: []
 )
 
@@ -120,10 +120,10 @@ func humanSizeStr(_ size: Int) -> String {
     
     if size > MB {
         dsize = Double(size) / Double(MB)
-        squal = " kB"
+        squal = " MB"
     } else if size > kB {
         dsize = Double(size) / Double(kB)
-        squal = " MB"
+        squal = " kB"
     } else {
         dsize = Double(size)
         if show_bytes {
