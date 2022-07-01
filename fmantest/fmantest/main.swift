@@ -7,50 +7,62 @@
 
 import Foundation
 
-print("Hello, World!")
+//print("Hello, World!")
 
 var fman = FileManager.default
 
-print()
+//print()
+//
+//let username: String = NSUserName()
+//let fullusername: String = NSFullUserName()
+//
+//print("User name = <\(username)>")
+//print("Full user name = <\(fullusername)>")
+//
+//print()
+//
+//let nshome = NSHomeDirectory()
+//print("NS home = <\(nshome)>")
+//
+//let home = fman.homeDirectoryForCurrentUser
+//print("home = <\(home)>")
+//
+//print()
+//
+//let nstmp = NSTemporaryDirectory()
+//print("NS temp = <\(nstmp)>")
+//
+//let tmp = fman.temporaryDirectory
+//print("temp = <\(tmp)>")
+//
+//print()
+//
+//let root = NSOpenStepRootDirectory()
+//print("root = <\(root)>")
+//
+//let root_url = NSURL.fileURL(withPath: root, isDirectory: true)
+//print("root URL = <\(root_url)>")
+//
+//let root_url2 = NSURL(fileURLWithPath: root, isDirectory: true)
+//print("root URL 2 = <\(root_url2)>")
+//
+//print()
 
-let username: String = NSUserName()
-let fullusername: String = NSFullUserName()
+let cwd = fman.currentDirectoryPath
+let cwd_url = URL(fileURLWithPath: cwd)
 
-print("User name = <\(username)>")
-print("Full user name = <\(fullusername)>")
+let attrKeys: [URLResourceKey] = [
+    .fileAllocatedSizeKey,
+    .isDirectoryKey,
+    .isExecutableKey,
+    .isSymbolicLinkKey
+]
 
-print()
-
-let nshome = NSHomeDirectory()
-print("NS home = <\(nshome)>")
-
-let home = fman.homeDirectoryForCurrentUser
-print("home = <\(home)>")
-
-print()
-
-let nstmp = NSTemporaryDirectory()
-print("NS temp = <\(nstmp)>")
-
-let tmp = fman.temporaryDirectory
-print("temp = <\(tmp)>")
-
-print()
-
-let root = NSOpenStepRootDirectory()
-print("root = <\(root)>")
-
-let root_url = NSURL.fileURL(withPath: root, isDirectory: true)
-print("root URL = <\(root_url)>")
-
-let root_url2 = NSURL(fileURLWithPath: root, isDirectory: true)
-print("root URL 2 = <\(root_url2)>")
-
-print()
+let attrKeysSet = Set(attrKeys)
 
 var homefiles = try? fman.contentsOfDirectory(
-    at: home,
-    includingPropertiesForKeys: nil,
+    at: cwd_url,
+    includingPropertiesForKeys: attrKeys,
     options: []
 )
 
@@ -62,20 +74,8 @@ extension URL: Comparable {
     }
 }
 
-let attrSetSize: Set<URLResourceKey> = [
-    .fileAllocatedSizeKey,
-]
-
-let attrSetType: Set<URLResourceKey> = [
-    .isDirectoryKey,
-    .isExecutableKey,
-    .isSymbolicLinkKey
-]
-
-let attrSetAll = attrSetSize.union(attrSetType)
-
 func fileAttributStrings(_ file: URL) -> (String, String) {
-    let resValues = try? file.resourceValues(forKeys: attrSetAll)
+    let resValues = try? file.resourceValues(forKeys: attrKeysSet)
     
     guard resValues != nil else { return ("", "") }
     
@@ -143,7 +143,7 @@ func humanSizeStr(_ size: Int) -> String {
 var files = homefiles!
 var sortedfiles = files.sorted()
 
-print("Files in home dir:")
+print("Files in \(cwd):")
 for f in sortedfiles {
     let (typestr, sizestr) = fileAttributStrings(f)
     print("\(sizestr) \(f.lastPathComponent)\(typestr)")
